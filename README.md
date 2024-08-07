@@ -4,7 +4,7 @@
 The modular turn restriction (MTR) methodology was proposed to achieve modular-deadlock-free for chiplet-based systems[1]. The turn restriction algorithm (TRA) is the core algorithm of MTR, which searches through all the boundary turn restriction combinations of the Network-on-Chip (NoC) on the target chiplet. Fast-TRA (FTRA) is proposed to accelerate the TRA by searching in a subspace of the solution space to reduce the time complexity by 2-4 degrees of magnitude and the optimal solution of FTRA is proved to acquire nearly equal performance to TRA. This project provides the algorithm code for TRA and FTRA.
 
 ## Branches
-This project has 2 branches: cpp and python, each of which is implemented by the corresponding language. The cpp branch is created due to the extreme inefficiency of python, thus, we only need to focus on the cpp branch.
+This project has 2 branches: cpp and python, each of which is implemented by the corresponding language. The cpp branch is created due to the extreme inefficiency of python, users only need to focus on the cpp branch.
 
 ## Structure
 
@@ -35,7 +35,7 @@ This project has 2 branches: cpp and python, each of which is implemented by the
    python3 ./brp/gen_plcmt.py
    ```
 
-   to generate to boundary router  placement files.
+   to generate the boundary router placement files.
 
 3. Create the runcase files in `./runcase`, please adopt the correct file name format according to `./srcs/run_mesh_st.cpp` and `./srcs/run_mesh_mt.cpp`.
 
