@@ -5,8 +5,8 @@ Analyze the performance difference between TRA and Presort-TRA
 import os
 import numpy as np
 
-file1 = './output_mesh_w3_h3_n3/mt_go0_mode31_r7.txt'
-file2 = './output_mesh_w3_h3_n3/mt_go0_mode27_r7.txt'
+file1 = './output_mesh_w3_h3_n3/mt_go1_mode31_r7.txt'
+file2 = './output_mesh_w3_h3_n3/mt_go1_mode27_r7.txt'
 
 def resort(lst):
     lst.sort(key=lambda dic:dic['ofv'], reverse=False)

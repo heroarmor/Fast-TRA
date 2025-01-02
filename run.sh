@@ -1,5 +1,6 @@
-./run_mesh_mt < runcase/mesh_wh4_n3_r4_mode32 
-# ./run_mesh_mt < runcase/mesh_wh4_n4_r7_mode0 
+# ./run_mesh_mt < runcase/mesh_wh4_n4_r4_mode0 
+# ./run_mesh_st < runcase/mesh_wh4_n4_r6_mode32
+# ./run_mesh_mt < runcase/mesh_wh4_n4_r7_mode0  
 # ./run_mesh_mt < runcase/mesh_wh4_n4_r8_mode0 
 # ./run_mesh_mt < runcase/mesh_wh4_n4_r5_mode0 
 # ./run_mesh_mt < runcase/mesh_wh4_n4_r7_mode0 
@@ -16,3 +17,6 @@
 # ./run_mesh_mt < runcase/mesh_wh4_n4_r6_mode27
 # ./run_mesh_mt < runcase/mesh_wh5_n5_r8_mode0
 # ./run_mesh_st < runcase/mesh_wh3_n3_mode32
+# ./run_mesh_mt < runcase/mesh_wh3_n3_r7_mode31
+# ./run_mesh_mt < runcase/mesh_wh3_n3_r7_mode27
+./route_table_gen < runcase/mesh_wh4_n4_r6_mode32

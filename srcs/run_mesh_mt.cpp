@@ -193,8 +193,7 @@ int main(){
                             to_string(_H_) + "_n" + to_string(_N_);
     file_name = output_path + "/mt_go" + to_string(_GO_) + "_mode" + to_string(_MODE_) + "_r" + to_string(_R_) + ".txt";
     ckpt_name = "./checkpoints/mesh_go" + to_string(_GO_) + "_w" + to_string(_W_) + "_h" + to_string(_H_) + "_n" + to_string(_N_) +
-                    "_mode" + to_string(_MODE_) + "_r" + to_string(_R_) + ".txt";
-
+                    "_mode" + to_string(_MODE_) + "_r" + to_string(_R_) + ".txt"; 
     system(("mkdir -p " + output_path).c_str());
     system(("cd "+ output_path).c_str());
     runMeshMultiThread(_MODE_,_W_,_H_,_N_,_R_,_TN_);

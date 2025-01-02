@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <stack>
 #include "channel_name.h"
 #include "ftra.h"
 using namespace std;
@@ -80,6 +81,11 @@ bool Graph::hasPath(int sv,int dv){
     return this->DFS(dv,sv,visited);
 }
 
+bool Graph::hasPathwithroute(int sv,int dv, vector<int> &path){
+    vector<bool> visited(this->vnum);
+    return this->DFSwithroute(dv,sv,visited,path);
+}
+
 bool Graph::DFS(int tgt_vid,int now_vid,vector<bool> &visited){
     //this function searches a loop/path from a given vertex(now_id)
     //to find a loop, set tgt_vid as the source vertex
@@ -102,6 +108,32 @@ bool Graph::DFS(int tgt_vid,int now_vid,vector<bool> &visited){
     }
     return false;
 }
+
+bool Graph::DFSwithroute(int tgt_vid, int now_vid, vector<bool> &visited, vector<int> &path){
+    // 该函数从当前顶点(now_vid)搜索到目标顶点(tgt_vid)的路径
+    // 如果找到路径，则返回true，并将路径记录在path中
+    struct Edge edge;
+    int eid;
+    visited[now_vid] = true;
+    path.push_back(now_vid); // 将当前顶点加入路径
+    eid = this->VertexSet[now_vid].first_edge;
+    while(eid != -1){
+        edge = this->EdgeSet[eid];
+        if(edge.dv == tgt_vid){
+            path.push_back(tgt_vid); // 找到目标顶点，加入路径
+            return true; // 找到路径，结束搜索
+        }
+        if(!visited[edge.dv]){
+            if(this->DFSwithroute(tgt_vid, edge.dv, visited, path)){
+                return true; // 如果在递归调用中找到路径，继续返回
+            }
+        }
+        eid = edge.next_edge;
+    }
+    path.pop_back(); // 回溯，移除当前顶点
+    return false; // 未找到路径
+}
+
 
 void Graph::searchOut(int now_vid,vector<int> &dist,int depth){
     int eid;

@@ -8,6 +8,7 @@
 #include <vector>
 #include <functional>
 #include <queue>
+#include <string>
 using namespace std;
 
 struct Edge{
@@ -33,9 +34,11 @@ class Graph{
         void printEdges();
         bool hasLoop(); //recommended only for testing if a construction is deadlock-free
         bool hasPath(int sv,int dv);
+        bool hasPathwithroute(int sv,int dv, vector<int> &path);
 
     protected:
         bool DFS(int tgt_vid,int now_vid,vector<bool> &visited); //find loop or find path
+        bool DFSwithroute(int tgt_vid,int now_vid,vector<bool> &visited, vector<int> &path); //find path
         void searchOut(int now_vid,vector<int> &dist,int depth);
         void searchIn(int now_vid,int dst_vid,vector<int> &dist,int depth);
 };
@@ -54,6 +57,7 @@ class MeshCdg: public Graph{
         MeshCdg(int w,int h);
         bool hasGLoop(); //recommended when running algorithm
         bool isConnected();
+        bool isAllConnected(string A);
         int getBoundDist(bool dir,int rid); //dir: 0-inBound 1-outBound
         void setBoundRouters(vector<int> brl); //brl contains the indexes of routers, not vertexes
         void initBoundTurns(vector<int> &bt);
@@ -80,6 +84,7 @@ struct Results{
 void setTurns(MeshCdg G,vector<int> &bt,vector<int> pt,int start,int end,int index,int r,struct Results &res);
 void setTurnsBkwd(MeshCdg G,vector<int> &bt,vector<int> pt,int start,int end,int index,int r,struct Results &res);
 void setTurnsDirect(MeshCdg &G,vector<int> &brl,struct Results &res);
+void setTurnsDirect1(MeshCdg &G,vector<int> &brl,struct Results &res);
 
 /*---------------------------utils.cpp-----------------------------*/
 struct Grade{

@@ -125,3 +125,59 @@ void setTurnsDirect(MeshCdg &G,vector<int> &brl,struct Results &res){
         }
     }
 }
+
+void setTurnsDirect1(MeshCdg &G,vector<int> &brl,struct Results &res){//需要修改
+    int sv,dv;
+    bool flag;
+    auto cdg = G;
+    double now_ofv,ad;
+    struct MeshCode code;
+    vector<int> pt;
+    for(auto free_bnd=brl.begin();free_bnd!=brl.end();free_bnd++){
+        // cout << "choose free-bound:" << *free_bnd << endl;
+        cdg = G;
+        flag = true;
+        pt.clear();
+        for(auto obj_bnd=brl.begin();obj_bnd!=brl.end();obj_bnd++){
+            if(*obj_bnd == *free_bnd) continue;
+            res.itc ++;
+            sv = cdg.encodeVid(*obj_bnd,MS_BOUND_I); //!for mesh
+            dv = cdg.encodeVid(*obj_bnd,cdg.routeAtSrc(*obj_bnd,*free_bnd));
+            cdg.rmvEdge(sv,dv);pt.push_back(sv);pt.push_back(dv);
+
+            // //print begin
+            // cdg.decodeVid(code,sv);
+            // cout << "(" << code.x << "," << code.y << "," << code.chan << ")-->";
+            // cdg.decodeVid(code,dv);
+            // cout << "(" << code.x << "," << code.y << "," << code.chan << ")" << endl;
+            // //print end
+
+            sv = cdg.encodeVid(*obj_bnd,cdg.routeAtDst(*free_bnd,*obj_bnd));
+            dv = cdg.encodeVid(*obj_bnd,MS_BOUND_O); //!for mesh
+            cdg.rmvEdge(sv,dv);pt.push_back(sv);pt.push_back(dv);
+
+            // //print begin
+            // cdg.decodeVid(code,sv);
+            // cout << "(" << code.x << "," << code.y << "," << code.chan << ")-->";
+            // cdg.decodeVid(code,dv);
+            // cout << "(" << code.x << "," << code.y << "," << code.chan << ")" << endl;
+            // //print end
+
+            ad = (double)(cdg.getAvgBoundDst());
+            cdg.rmvBoundLinks();
+            now_ofv = (double)(cdg.getAvgBoundRch())/ad; 
+            cdg.repBoundLinks();
+            if(res.ofv >= now_ofv){
+                flag = false;
+                break;
+            }
+        }
+        if(!cdg.hasGLoop() && flag){
+            // cout << "find a solution" << endl;
+            res.ofv = now_ofv;
+            res.os = pt;
+            string A="computer";
+            G.isAllConnected(A);
+        }
+    }
+}

@@ -3,7 +3,7 @@ from copy import deepcopy
 import itertools as it
 
 os.chdir("./brp")
-_W_H_ = 4 #network width and height
+_W_H_ = 3 #network width and height
 _N_ = 3 #number of boundary routers
 _K_ = 0 #neighbor-mask threshold
 _PWF_ = 0 #strong mask or weak mask

@@ -47,6 +47,129 @@ bool MeshCdg::isConnected(){
     return true;
 }
 
+bool MeshCdg::isAllConnected(string A){
+    int base;
+    vector<int> path;
+    MeshCode code,code1,code2;
+    if(A=="human"){
+    for(int i=0;i<this->W*this->H;i++){
+        base=12*i;
+        if((this->hasPathwithroute(base+MS_LOCAL_I,this->vnum-1,path))==false)
+            {return false;}
+        path.clear();     
+        if((this->hasPathwithroute(base+MS_LOCAL_I,this->vnum-1,path))==true){
+            MeshCdg::decodeVid(code1,base+MS_LOCAL_I);
+            MeshCdg::decodeVid(code2,this->vnum-1);
+            cout << "path from " << "(" << code1.x << "," << code1.y << "," << code1.chan << ")" << " to " 
+            <<"outside node"<< endl;
+            for(unsigned int j=0;j<path.size();j++){
+                if(path[j]==this->vnum-1) {cout << "outside node";}
+                else{MeshCdg::decodeVid(code,path[j]);
+                cout << "(" << code.x << "," << code.y << "," << code.chan << ")-->";}
+            }
+            cout << endl;
+            path.clear();
+        }
+        if(!(this->hasPathwithroute(this->vnum-1,base+MS_LOCAL_O,path))){
+                return false;}
+        path.clear();   
+        if((this->hasPathwithroute(this->vnum-1,base+MS_LOCAL_O,path))==true){
+            MeshCdg::decodeVid(code1,this->vnum-1);
+            MeshCdg::decodeVid(code2,base+MS_LOCAL_O);
+            cout << "path from " << "outside node" << " to "
+            << "(" << code2.x << "," << code2.y << "," << code2.chan << ")" << endl;
+            for(unsigned int j=0;j<path.size();j++){
+                if(path[j]==this->vnum-1) {cout << "outside node";}
+                else{
+                MeshCdg::decodeVid(code,path[j]);
+                MeshCdg::decodeVid(code,path[j]);
+                cout << "-->(" << code.x << "," << code.y << "," << code.chan << ")";}
+            }
+            cout << endl;
+            path.clear();   
+        } 
+    }
+    path.clear();
+    for(int i=0;i<this->W*this->H;i++){
+        for(int j=0;j<this->W*this->H;j++){
+            int startbase = i*12;
+            int endbase = j*12;
+            MeshCode code1,code2;
+            if(i==j) continue;
+            if(!(this->hasPathwithroute(startbase+MS_LOCAL_I,endbase+MS_LOCAL_O,path)))
+                {path.clear();   
+                return false;}
+            else{
+                MeshCdg::decodeVid(code1,startbase+MS_LOCAL_I);
+                MeshCdg::decodeVid(code2,endbase+MS_LOCAL_O);
+                cout << "path from " << "(" << code1.x << "," << code1.y << "," << code1.chan << ")" << " to " 
+                << "(" << code2.x << "," << code2.y << "," << code2.chan << ")" << endl;
+            for(unsigned int k=0;k<path.size();k++){
+                if(path[k]==startbase+MS_LOCAL_I) {cout <<"("<< code.x << "," << code.y << "," << code.chan << ")";}
+                else{MeshCdg::decodeVid(code,path[k]);
+                cout << "-->(" << code.x << "," << code.y << "," << code.chan << ")";}
+            }
+            cout << endl;
+            path.clear();
+            }
+        }
+    }
+    }
+    else{
+        for(int i=0;i<this->W*this->H;i++){
+        base=12*i;
+        if((this->hasPathwithroute(base+MS_LOCAL_I,this->vnum-1,path))==false)
+            {path.clear();
+            return false;}
+            path.clear();
+        if((this->hasPathwithroute(base+MS_LOCAL_I,this->vnum-1,path))==true){
+            cout << "path from " << base+MS_LOCAL_I << " to " << this->vnum-1 << endl;
+            for(unsigned int j=0;j<path.size();j++){
+                if(path[j]==this->vnum-1) {cout << path[j]<<" ";}
+                else{cout << path[j] << " ";}
+            }
+            cout << endl;
+            path.clear();
+        }
+        if(!(this->hasPathwithroute(this->vnum-1,base+MS_LOCAL_O,path))){
+                path.clear();
+                return false;}
+        path.clear();
+        if((this->hasPathwithroute(this->vnum-1,base+MS_LOCAL_O,path))==true){
+           cout << "path from " << this->vnum-1 << " to " << base+MS_LOCAL_O << endl;
+            for(unsigned int j=0;j<path.size();j++){
+                if(path[j]==this->vnum-1) {cout << path[j]<<" ";}
+                else{cout << path[j] << " ";}
+            }
+            cout << endl;
+            path.clear();   
+        } 
+    }
+    path.clear();
+    for(int i=0;i<this->W*this->H;i++){
+        for(int j=0;j<this->W*this->H;j++){
+            int startbase = i*12;
+            int endbase = j*12;
+            MeshCode code1,code2;
+            if(i==j) continue;
+            if(!(this->hasPathwithroute(startbase+MS_LOCAL_I,endbase+MS_LOCAL_O,path)))
+                {path.clear();
+                return false;}
+            else{
+                cout << "path from " << startbase+MS_LOCAL_I << " to " << endbase+MS_LOCAL_O << endl;
+            for(unsigned int k=0;k<path.size();k++){
+                if(path[k]==startbase+MS_LOCAL_I) {cout<<path[k]<<" ";}
+                else{cout << path[k] << " ";}
+            }
+            cout << endl;
+            path.clear();
+            }
+        }
+    }
+    }
+    
+    return true;
+}
 
 int MeshCdg::getBoundDist(bool dir,int rid){
     vector<int> dist; //all possible distances
