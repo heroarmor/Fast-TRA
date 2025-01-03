@@ -1,4 +1,4 @@
-best placement: 1 5 9 13 path from 8 to 192
+path from 8 to 192
 8 5 12 23 192 
 path from 192 to 9
 192 166 157 148 150 99 102 51 54 3 9 

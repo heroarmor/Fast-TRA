@@ -3,69 +3,71 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <ctime>
 
 using namespace std;
 
 int main() {
-    // 定义 a 和 b 的取值集合
+    // Define the sets of possible values for a and b
     vector<int> a_values = {192};
     vector<int> b_values = {192};
-    
-    // 生成 12k + 8 形式的 a 值，k = 0 到 15
-    for(int k = 0; k <= 15; ++k){
+
+    // Generate a-values of the form 12k + 8, for k = 0 to 15
+    for (int k = 0; k <= 15; ++k) {
         a_values.push_back(12 * k + 8);
     }
 
-    // 生成 12k + 9 形式的 b 值，k = 0 到 15
-    for(int k = 0; k <= 15; ++k){
+    // Generate b-values of the form 12k + 9, for k = 0 to 15
+    for (int k = 0; k <= 15; ++k) {
         b_values.push_back(12 * k + 9);
     }
 
-    // 设置随机数生成器
+    // Set up random number generators
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> a_dist(0, a_values.size() - 1);
     uniform_int_distribution<> b_dist(0, b_values.size() - 1);
+    uniform_int_distribution<> size_dist(1, 10); // size is between 1 and 10
+    bernoulli_distribution timestamp_increment_dist(0.001); // 0.1% chance of 1, 99.9% chance of 0
 
-    // 定义要生成的查询对数量
+    // Define how many query pairs to generate
     int num_queries;
-    cout << "请输入要生成的查询对数量: ";
+    cout << "Please enter the number of query pairs to generate: ";
     cin >> num_queries;
 
-    // 打开输出文件
+    // Open the output file
     ofstream outfile("queries.txt");
-    if(!outfile.is_open()){
+    if (!outfile.is_open()) {
         cerr << "Error: Unable to open file queries.txt for writing." << endl;
         return 1;
     }
 
-    // 生成并写入查询对
-    for(int i = 0; i < num_queries; ++i){
+    // Initialize timestamp
+    int timestamp = 0;
+
+    // Generate and write query pairs
+    for (int i = 0; i < num_queries; ++i) {
         int a = a_values[a_dist(gen)];
         int b = b_values[b_dist(gen)];
-        
-        // 如果 a == b == 192，则重新生成 b
-        if(a == 192 && b == 192){
-            // 重新生成 b，确保 b != 192
-            do{
-                b = b_values[b_dist(gen)];
-            } while(b == 192);
+
+        // If a == 192 and b == 192, regenerate b
+        while (a == 192 && b == 192) {
+            b = b_values[b_dist(gen)];
         }
 
-        // 确保 a != b
-        if(a != b){
-            outfile << a << " " << b << "\n";
+        // Ensure a != b
+        while (a == b) {
+            b = b_values[b_dist(gen)];
         }
-        else{
-            // 如果 a == b （除了 192），允许继续
-            // 根据您的要求，这种情况可以存在，但a != b已经满足
-            outfile << a << " " << b << "\n";
-        }
+
+        // Update timestamp
+        timestamp += timestamp_increment_dist(gen);
+
+        // Write to file
+        outfile << a << " " << b << " " << size_dist(gen) << " " << timestamp << "\n";
     }
 
     outfile.close();
-    cout << "成功生成 " << num_queries << " 个查询对并保存到 queries.txt 文件中。" << endl;
+    cout << "Successfully generated " << num_queries << " query pairs and saved them to queries.txt." << endl;
 
     return 0;
 }

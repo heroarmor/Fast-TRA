@@ -14,11 +14,20 @@ using namespace std;
 struct Edge{
     int sv,dv; 
     int next_edge; //index in vector
+    int weight = 0;
 };
 
 struct Vertex{
     int id;
     int first_edge = -1; //index in vector 
+    int weight = 0;
+};
+
+struct mydata{
+    int source;
+    int dest;
+    int size;
+    int timestamp;
 };
 
 /*---------------------------graph.cpp-----------------------------*/
@@ -31,14 +40,19 @@ class Graph{
         void rmvEdge(int sv,int dv);
         void addEdgesFrom(vector<int> &rt);
         void rmvEdgesFrom(vector<int> &pt);
+        void addEdgeweight(int weight, Edge* edge);
+        void setEdgeweight(int weight, Edge* edge);
         void printEdges();
         bool hasLoop(); //recommended only for testing if a construction is deadlock-free
         bool hasPath(int sv,int dv);
         bool hasPathwithroute(int sv,int dv, vector<int> &path);
-
+        bool hasPathwithroute1(int sv,int dv, vector<int> &path);
+        Edge* getEdge(int sv,int dv);//get the edge object
+        void makeweightzero();
     protected:
         bool DFS(int tgt_vid,int now_vid,vector<bool> &visited); //find loop or find path
         bool DFSwithroute(int tgt_vid,int now_vid,vector<bool> &visited, vector<int> &path); //find path
+        bool BFSwithroute(int tgt_vid,int now_vid,vector<bool> &visited, vector<int> &path); //find path
         void searchOut(int now_vid,vector<int> &dist,int depth);
         void searchIn(int now_vid,int dst_vid,vector<int> &dist,int depth);
 };

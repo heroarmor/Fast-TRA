@@ -38,6 +38,31 @@ void Graph::rmvEdge(int sv,int dv){
     // cout << "removed edge (" << sv << "," << dv << ")" << endl;
 }
 
+Edge* Graph::getEdge(int sv,int dv){
+    int eid;
+    eid = this->VertexSet[sv].first_edge;
+    while(eid!=-1){
+        if(this->EdgeSet[eid].dv==dv) return &this->EdgeSet[eid];
+        eid = this->EdgeSet[eid].next_edge;
+    }
+    cout << "getEdge failed:cannot find object edge: (" << sv << "," << dv << ")" << endl;
+    return &this->EdgeSet[0];
+}
+
+void Graph::addEdgeweight(int weight, Edge* edge){
+    edge->weight += weight;
+}
+
+void Graph::makeweightzero(){
+    for(unsigned int i=0;i<this->EdgeSet.size();i++){
+        this->EdgeSet[i].weight = 0;
+    }
+}
+
+void Graph::setEdgeweight(int weight, Edge* edge){
+    edge->weight = weight;
+}
+
 void Graph::addEdgesFrom(vector<int> &rt){
     for(unsigned int i=0;i<(rt.size()>>1);i++){
         this->addEdge(rt[i<<1],rt[(i<<1)+1]);
@@ -84,6 +109,11 @@ bool Graph::hasPath(int sv,int dv){
 bool Graph::hasPathwithroute(int sv,int dv, vector<int> &path){
     vector<bool> visited(this->vnum);
     return this->DFSwithroute(dv,sv,visited,path);
+}
+
+bool Graph::hasPathwithroute1(int sv,int dv, vector<int> &path){
+    vector<bool> visited(this->vnum);
+    return this->BFSwithroute(dv,sv,visited,path);
 }
 
 bool Graph::DFS(int tgt_vid,int now_vid,vector<bool> &visited){
@@ -134,6 +164,38 @@ bool Graph::DFSwithroute(int tgt_vid, int now_vid, vector<bool> &visited, vector
     return false; // 未找到路径
 }
 
+bool Graph::BFSwithroute(int tgt_vid, int now_vid, vector<bool> &visited, vector<int> &path) {
+    struct Edge edge;
+    queue<vector<int>> q; // 队列存储路径
+    q.push({now_vid}); // 初始路径为当前顶点
+
+    visited[now_vid] = true;
+
+    while (!q.empty()) {
+        vector<int> current_path = q.front(); // 获取当前路径
+        q.pop();
+
+        int current_vid = current_path.back(); // 当前路径的最后一个顶点
+        if (current_vid == tgt_vid) {
+            path = current_path; // 找到目标顶点，记录路径
+            return true; // 返回成功
+        }
+
+        int eid = this->VertexSet[current_vid].first_edge; // 获取当前顶点的第一条边
+        while (eid != -1) {
+            edge = this->EdgeSet[eid];
+            if (!visited[edge.dv]) {
+                visited[edge.dv] = true; // 标记目标顶点已访问
+                vector<int> new_path = current_path;
+                new_path.push_back(edge.dv); // 将目标顶点加入路径
+                q.push(new_path); // 将新路径加入队列
+            }
+            eid = edge.next_edge; // 处理下一条边
+        }
+    }
+
+    return false; // 队列为空，未找到路径
+}
 
 void Graph::searchOut(int now_vid,vector<int> &dist,int depth){
     int eid;

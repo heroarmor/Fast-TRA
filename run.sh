@@ -19,4 +19,5 @@
 # ./run_mesh_st < runcase/mesh_wh3_n3_mode32
 # ./run_mesh_mt < runcase/mesh_wh3_n3_r7_mode31
 # ./run_mesh_mt < runcase/mesh_wh3_n3_r7_mode27
-./route_table_gen < runcase/mesh_wh4_n4_r6_mode32
+# ./route_table_gen < runcase/mesh_wh4_n4_r6_mode32
+ ./simulator < runcase/mesh_wh4_n4_r6_mode32

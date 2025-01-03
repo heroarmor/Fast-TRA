@@ -178,7 +178,7 @@ int main(){
     file_name = output_path + "/temp.txt";
     system(("mkdir -p " + output_path).c_str());
     system(("cd "+ output_path).c_str());
-    int max_idx=getmaxindex();
+    int max_idx=getmaxindex()-1;
     runMeshSingleThread(_MODE_,_GO_,_W_,_H_,_N_,_R_,max_idx);
     return 0;
 }

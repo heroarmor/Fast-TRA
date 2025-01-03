@@ -152,7 +152,7 @@ bool MeshCdg::isAllConnected(string A){
             int endbase = j*12;
             MeshCode code1,code2;
             if(i==j) continue;
-            if(!(this->hasPathwithroute(startbase+MS_LOCAL_I,endbase+MS_LOCAL_O,path)))
+            if(!(this->hasPathwithroute1(startbase+MS_LOCAL_I,endbase+MS_LOCAL_O,path)))
                 {path.clear();
                 return false;}
             else{
@@ -283,7 +283,6 @@ void MeshCdg::repBoundLinks(){
         this->addEdge(this->vnum-1,base+MS_BOUND_I);
     }
 }
-
 
 void MeshCdg::setOriginEdges(){
     int base = 0;
