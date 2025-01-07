@@ -148,15 +148,15 @@ bool MeshCdg::isAllConnected(string A){
     path.clear();
     for(int i=0;i<this->W*this->H;i++){
         for(int j=0;j<this->W*this->H;j++){
-            int startbase = i*12;
-            int endbase = j*12;
+            int startbase = i;
+            int endbase = j;
             MeshCode code1,code2;
             if(i==j) continue;
-            if(!(this->hasPathwithroute1(startbase+MS_LOCAL_I,endbase+MS_LOCAL_O,path)))
+            if(!(this->hasPathwithroute1(startbase,endbase,path)))
                 {path.clear();
                 return false;}
             else{
-                cout << "path from " << startbase+MS_LOCAL_I << " to " << endbase+MS_LOCAL_O << endl;
+                cout << "path from " << startbase*12+MS_LOCAL_I << " to " << endbase*12+MS_LOCAL_O << endl;
             for(unsigned int k=0;k<path.size();k++){
                 if(path[k]==startbase+MS_LOCAL_I) {cout<<path[k]<<" ";}
                 else{cout << path[k] << " ";}

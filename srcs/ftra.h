@@ -52,7 +52,7 @@ class Graph{
     protected:
         bool DFS(int tgt_vid,int now_vid,vector<bool> &visited); //find loop or find path
         bool DFSwithroute(int tgt_vid,int now_vid,vector<bool> &visited, vector<int> &path); //find path
-        bool BFSwithroute(int tgt_vid,int now_vid,vector<bool> &visited, vector<int> &path); //find path
+        bool BFSwithroute(int tgt_vid,int now_vid, vector<int> &path); //find path
         void searchOut(int now_vid,vector<int> &dist,int depth);
         void searchIn(int now_vid,int dst_vid,vector<int> &dist,int depth);
 };

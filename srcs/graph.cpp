@@ -112,8 +112,7 @@ bool Graph::hasPathwithroute(int sv,int dv, vector<int> &path){
 }
 
 bool Graph::hasPathwithroute1(int sv,int dv, vector<int> &path){
-    vector<bool> visited(this->vnum);
-    return this->BFSwithroute(dv,sv,visited,path);
+    return this->BFSwithroute(dv,sv,path);
 }
 
 bool Graph::DFS(int tgt_vid,int now_vid,vector<bool> &visited){
@@ -164,37 +163,42 @@ bool Graph::DFSwithroute(int tgt_vid, int now_vid, vector<bool> &visited, vector
     return false; // 未找到路径
 }
 
-bool Graph::BFSwithroute(int tgt_vid, int now_vid, vector<bool> &visited, vector<int> &path) {
-    struct Edge edge;
-    queue<vector<int>> q; // 队列存储路径
-    q.push({now_vid}); // 初始路径为当前顶点
-
-    visited[now_vid] = true;
-
-    while (!q.empty()) {
-        vector<int> current_path = q.front(); // 获取当前路径
-        q.pop();
-
-        int current_vid = current_path.back(); // 当前路径的最后一个顶点
-        if (current_vid == tgt_vid) {
-            path = current_path; // 找到目标顶点，记录路径
-            return true; // 返回成功
+bool Graph::BFSwithroute(int tgt_vid, int now_vid, vector<int> &path) {
+    int tgtx=tgt_vid%4;
+    int tgty=tgt_vid/4;
+    int nowx=now_vid%4;
+    int nowy=now_vid/4;
+    int curid=now_vid*12+MS_LOCAL_I;
+    int destid=tgt_vid*12+MS_LOCAL_O;
+    path.push_back(curid); // 将当前顶点加入路径
+    while ((nowy*4+nowx)*12+MS_LOCAL_O!=destid) {
+        if(nowx!=tgtx){
+            if(nowx>tgtx){
+                path.push_back((nowy*4+nowx)*12+MS_LEFT_O); //向左
+                nowx--; //向左
+                path.push_back((nowy*4+nowx)*12+MS_RIGHT_I);
+            } //向左
+            else if(nowx<tgtx){
+                path.push_back((nowy*4+nowx)*12+MS_RIGHT_O); //向右
+                nowx++; //向右
+                path.push_back((nowy*4+nowx)*12+MS_LEFT_I);
+            } //向右
         }
-
-        int eid = this->VertexSet[current_vid].first_edge; // 获取当前顶点的第一条边
-        while (eid != -1) {
-            edge = this->EdgeSet[eid];
-            if (!visited[edge.dv]) {
-                visited[edge.dv] = true; // 标记目标顶点已访问
-                vector<int> new_path = current_path;
-                new_path.push_back(edge.dv); // 将目标顶点加入路径
-                q.push(new_path); // 将新路径加入队列
-            }
-            eid = edge.next_edge; // 处理下一条边
+        else{
+            if(nowy>tgty){
+                path.push_back((nowy*4+nowx)*12+MS_UP_O); 
+                nowy--; 
+                path.push_back((nowy*4+nowx)*12+MS_DOWN_I);
+            } //向上
+            else if(nowy<tgty){
+                path.push_back((nowy*4+nowx)*12+MS_DOWN_O); 
+                nowy++; 
+                path.push_back((nowy*4+nowx)*12+MS_UP_I);
+            } //向下
         }
     }
-
-    return false; // 队列为空，未找到路径
+    path.push_back(destid); // 将目标顶点加入路径
+    return true; // 队列为空，未找到路径
 }
 
 void Graph::searchOut(int now_vid,vector<int> &dist,int depth){

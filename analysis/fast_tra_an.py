@@ -8,7 +8,7 @@ import numpy as np
 from copy import deepcopy
 
 file1 = './output_mesh_w4_h4_n4/mt_go1_mode0_r7.txt'
-file2 = './output_mesh_w4_h4_n4/mt_go1_mode32_r6.txt'
+file2 = './output_mesh_w4_h4_n4/mt_go0_mode32_r6.txt'
 
 def resort(lst,key):
     lst.sort(key=lambda dic:dic[key], reverse=False)
